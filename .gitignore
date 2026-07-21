@@ -1,0 +1,5 @@
+audit/browser-renders/
+audit/chromium-pdfs/
+audit/pdf-renders/
+__pycache__/
+*.pyc

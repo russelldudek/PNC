@@ -1,0 +1,17 @@
+:root {
+  --pnc-orange: #f58025;
+  --pnc-blue: #0069aa;
+  --pnc-deep-blue: #003b5c;
+  --pnc-ink: #10212b;
+  --pnc-slate: #5a6b75;
+  --pnc-mist: #eef4f6;
+  --pnc-paper: #fbfcfc;
+  --pnc-white: #ffffff;
+  --candidate-teal: #2b7c75;
+  --candidate-gold: #c79732;
+  --candidate-red: #a44b4b;
+  --shadow: 0 24px 70px rgba(16, 33, 43, 0.12);
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 28px;
+}
