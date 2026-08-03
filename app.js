@@ -1,4 +1,40 @@
 (() => {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .revision-signal{background:#fff8f2;border-top:1px solid #f2c8a8;border-bottom:1px solid #f2c8a8}
+    .revision-signal-inner{max-width:1180px;margin:0 auto;padding:24px 28px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:center}
+    .revision-signal .revision-kicker{margin:0 0 5px;color:#a44b10;font-size:.75rem;font-weight:900;letter-spacing:.11em;text-transform:uppercase}
+    .revision-signal h2{margin:0 0 7px;color:#10212b;font-family:Georgia,'Times New Roman',serif;font-size:1.55rem;font-weight:500}
+    .revision-signal p{margin:0;max-width:790px;color:#3f515b;font-size:.94rem}
+    .revision-signal-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+    .revision-signal-actions a{display:inline-flex;padding:10px 13px;border-radius:7px;text-decoration:none;font-size:.82rem;font-weight:850;background:#003b5c;color:#fff}
+    .revision-signal-actions a:first-child{background:#f58025;color:#17242b}
+    @media(max-width:760px){.revision-signal-inner{grid-template-columns:1fr;padding:22px 20px}.revision-signal-actions{justify-content:flex-start}}
+  `;
+  document.head.appendChild(style);
+
+  const section = document.createElement('section');
+  section.className = 'revision-signal';
+  section.setAttribute('aria-labelledby', 'revision-signal-title');
+  section.innerHTML = `
+    <div class="revision-signal-inner">
+      <div>
+        <p class="revision-kicker">Stakeholder-informed revision · August 3, 2026</p>
+        <h2 id="revision-signal-title">Discovery changed the plan.</h2>
+        <p>The hiring conversation clarified a broader need: establish the corporate AI portfolio decision system first, then enter through the safest bounded workflow and earn the reusable pattern.</p>
+      </div>
+      <div class="revision-signal-actions">
+        <a href="interview-learning-delta.html">See what changed →</a>
+        <a href="90-day-plan.html">Open revised 90-day plan</a>
+      </div>
+    </div>`;
+  hero.insertAdjacentElement('afterend', section);
+})();
+
+(() => {
   const scenarios = {
     process: {
       title: 'Employee process assistant', posture: 'Controlled pilot',
