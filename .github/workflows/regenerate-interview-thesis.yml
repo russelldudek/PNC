@@ -1,0 +1,84 @@
+name: Regenerate candidate thesis PDF
+
+on:
+  push:
+    branches:
+      - interview-learning-delta
+    paths:
+      - interview-brief.html
+      - documents.css
+      - brand-tokens.css
+      - assets/brand/pnc-logo.svg
+      - .github/workflows/regenerate-interview-thesis.yml
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: interview-learning-delta
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install document tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0
+          python -m pip install --upgrade pip
+          python -m pip install weasyprint pypdf
+
+      - name: Generate candidate-facing PDF
+        run: |
+          mkdir -p docs
+          weasyprint interview-brief.html docs/Russell-Dudek-PNC-Interview-Thesis-Brief.pdf
+
+      - name: Validate pagination and candidate-facing content
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from pypdf import PdfReader
+
+          path = Path('docs/Russell-Dudek-PNC-Interview-Thesis-Brief.pdf')
+          reader = PdfReader(str(path))
+          assert len(reader.pages) == 3, f'Expected 3 pages, found {len(reader.pages)}'
+          text = '\n'.join((page.extract_text() or '') for page in reader.pages).lower()
+          forbidden = [
+              'thirty-minute conversation architecture',
+              'answer spine',
+              'interview rules',
+              'lead with',
+              'use one primary story',
+              'teleprompter',
+              'outside help during the live interview',
+              'how hands-on are you',
+              'roleforge',
+              'dudexos',
+          ]
+          matches = [term for term in forbidden if term in text]
+          assert not matches, f'Candidate-facing PDF contains forbidden coaching/internal terms: {matches}'
+          assert 'enterprise ai candidate thesis' in text
+          assert 'approved-tool operating principle' in text
+          assert 'questions for continued discovery' in text
+          print(f'Validated {len(reader.pages)} pages; no coaching/internal-note matches.')
+          PY
+
+      - name: Commit regenerated PDF
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/Russell-Dudek-PNC-Interview-Thesis-Brief.pdf
+          if git diff --cached --quiet; then
+            echo "PDF already matches generated source."
+          else
+            git commit -m "Regenerate candidate-facing interview thesis PDF"
+            git push origin HEAD:interview-learning-delta
+          fi
