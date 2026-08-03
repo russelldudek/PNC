@@ -13,7 +13,8 @@ The `interview-learning-delta` branch records how the first hiring-team conversa
 - compares approved Copilot, vendor AI, deterministic automation, bounded custom, and no-AI paths;
 - establishes SWAT-team intake, allocation, decision-rights, and reuse mechanisms;
 - allows offline, sandbox, shadow, draft-only, assist, and production-pilot evidence modes;
-- adds economics, capacity, and cost per accepted outcome to the scorecard.
+- adds economics, capacity, and cost per accepted outcome to the scorecard;
+- links the candidate-facing 90-day plan to the live Linear execution board.
 
 The branch is a reviewable duplicate of the current public site. `main` and the live GitHub Pages deployment remain unchanged until an explicit merge decision.
 
@@ -23,9 +24,10 @@ The branch is a reviewable duplicate of the current public site. `main` and the 
 - Stakeholder-informed interview learning delta
 - Two-page role-aligned resume
 - One-page cover letter
-- Three-page interview thesis brief
+- Three-page enterprise AI candidate thesis
 - Revised two-page 90-day entry plan
 - Two-page AI Work Control Review
+- Live Linear 90-day execution board
 
 ## Sources and evidence
 
