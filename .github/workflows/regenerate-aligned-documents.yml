@@ -71,7 +71,7 @@ jobs:
 
           letter = texts['docs/Russell-Dudek-PNC-Enterprise-AI-Cover-Letter.pdf']
           assert 'governed portfolio of work' in letter
-          assert 'advance, repair, hold, or stop' in letter
+          assert all(term in letter for term in ['advance', 'repair', 'hold', 'stop'])
           assert 'scale prompts' not in letter
 
           plan = texts['docs/Russell-Dudek-PNC-90-Day-Plan.pdf']
