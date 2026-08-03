@@ -1,0 +1,117 @@
+name: Regenerate aligned candidate documents
+
+on:
+  push:
+    branches:
+      - interview-learning-delta
+    paths:
+      - resume.html
+      - cover-letter.html
+      - 90-day-plan.html
+      - work-control-review.html
+      - documents.css
+      - brand-tokens.css
+      - assets/brand/pnc-logo.svg
+      - .github/workflows/regenerate-aligned-documents.yml
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: interview-learning-delta
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install document tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0
+          python -m pip install --upgrade pip
+          python -m pip install weasyprint pypdf
+
+      - name: Generate PDFs
+        run: |
+          mkdir -p docs
+          weasyprint resume.html docs/Russell-Dudek-PNC-Enterprise-AI-Resume.pdf
+          weasyprint cover-letter.html docs/Russell-Dudek-PNC-Enterprise-AI-Cover-Letter.pdf
+          weasyprint 90-day-plan.html docs/Russell-Dudek-PNC-90-Day-Plan.pdf
+          weasyprint work-control-review.html docs/Russell-Dudek-PNC-AI-Work-Control-Review.pdf
+
+      - name: Validate pagination and continuity
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from pypdf import PdfReader
+
+          expected = {
+              'docs/Russell-Dudek-PNC-Enterprise-AI-Resume.pdf': 2,
+              'docs/Russell-Dudek-PNC-Enterprise-AI-Cover-Letter.pdf': 1,
+              'docs/Russell-Dudek-PNC-90-Day-Plan.pdf': 2,
+              'docs/Russell-Dudek-PNC-AI-Work-Control-Review.pdf': 2,
+          }
+          texts = {}
+          for path, pages in expected.items():
+              reader = PdfReader(path)
+              assert len(reader.pages) == pages, f'{path}: expected {pages} pages, found {len(reader.pages)}'
+              texts[path] = '\n'.join((page.extract_text() or '') for page in reader.pages).lower()
+
+          resume = texts['docs/Russell-Dudek-PNC-Enterprise-AI-Resume.pdf']
+          assert 'corporate ai demand portfolio' in resume
+          assert 'food safety management' not in resume
+          assert 'capability disposition' in resume
+
+          letter = texts['docs/Russell-Dudek-PNC-Enterprise-AI-Cover-Letter.pdf']
+          assert 'governed portfolio of work' in letter
+          assert 'scale prompts' not in letter
+          assert 'advance, repair, hold, or stop' in letter
+
+          plan = texts['docs/Russell-Dudek-PNC-90-Day-Plan.pdf']
+          assert 'corporate ai demand portfolio' in plan
+          assert 'pnc enterprise ai engineer — first 90 days in linear' in plan
+          assert 'offline evaluation, sandbox, shadow, draft-only, assist, or production pilot' in plan
+
+          review = texts['docs/Russell-Dudek-PNC-AI-Work-Control-Review.pdf']
+          assert 'selected capability path' in review
+          assert 'source authority / lineage' in review
+          assert 'economics / review burden' in review
+          assert 'advance' in review
+
+          combined = '\n'.join(texts.values())
+          forbidden = [
+              'thirty-minute conversation architecture',
+              'answer spine',
+              'interview rules',
+              'use one primary story',
+              'teleprompter',
+              'roleforge',
+          ]
+          matches = [term for term in forbidden if term in combined]
+          assert not matches, f'Candidate-facing documents contain stale/internal terms: {matches}'
+          print('Validated page counts and cross-artifact continuity.')
+          PY
+
+      - name: Commit regenerated PDFs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            docs/Russell-Dudek-PNC-Enterprise-AI-Resume.pdf \
+            docs/Russell-Dudek-PNC-Enterprise-AI-Cover-Letter.pdf \
+            docs/Russell-Dudek-PNC-90-Day-Plan.pdf \
+            docs/Russell-Dudek-PNC-AI-Work-Control-Review.pdf
+          if git diff --cached --quiet; then
+            echo "PDFs already match generated source."
+          else
+            git commit -m "Regenerate interview-informed candidate documents"
+            git push origin HEAD:interview-learning-delta
+          fi
