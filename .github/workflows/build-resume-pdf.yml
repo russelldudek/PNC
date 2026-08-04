@@ -1,0 +1,58 @@
+name: Build resume PDF
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - resume.html
+      - resume.css
+      - documents.css
+      - brand-tokens.css
+      - assets/brand/pnc-logo.svg
+      - .github/workflows/build-resume-pdf.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Render compact resume PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8000 >/tmp/pnc-resume-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          sleep 2
+
+          output="$GITHUB_WORKSPACE/docs/Russell-Dudek-PNC-Enterprise-AI-Resume.pdf"
+          google-chrome \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --no-pdf-header-footer \
+            --print-to-pdf="$output" \
+            http://127.0.0.1:8000/resume.html
+
+          test -s "$output"
+          test "$(stat -c%s "$output")" -gt 10000
+
+      - name: Commit regenerated PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add docs/Russell-Dudek-PNC-Enterprise-AI-Resume.pdf
+          if git diff --cached --quiet; then
+            echo "Resume PDF is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Regenerate compact two-page resume PDF [skip ci]"
+          git push origin HEAD:main
