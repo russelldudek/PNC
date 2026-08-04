@@ -1,48 +1,49 @@
 /* Resume-only presentation refinements. Content remains unchanged. */
 body:has(.sidebar-grid){background:#e8eef1}
 body:has(.sidebar-grid) .document{background:transparent;box-shadow:none}
-body:has(.sidebar-grid) .page{padding:.48in .54in .45in;box-shadow:0 18px 52px rgba(16,33,43,.16);margin-bottom:24px}
-body:has(.sidebar-grid) .doc-header{grid-template-columns:minmax(0,1fr) 1.08in;gap:.22in;padding-bottom:11px;margin-bottom:13px;border-bottom-width:3px}
-body:has(.sidebar-grid) .doc-name{font-size:25pt;letter-spacing:-.02em}
-body:has(.sidebar-grid) .doc-role{font-size:9.6pt;margin-top:5px;letter-spacing:.035em}
-body:has(.sidebar-grid) .doc-logo{width:1.08in;align-self:center}
-body:has(.sidebar-grid) .contact-line{margin-top:8px;gap:3px 10px;font-size:7.55pt;line-height:1.3}
-body:has(.sidebar-grid) .doc-kicker{font-size:7pt;margin-bottom:5px;letter-spacing:.15em}
-body:has(.sidebar-grid) .doc-title{font-size:18.2pt;line-height:1.08;margin-bottom:9px;max-width:6.45in}
-body:has(.sidebar-grid) .summary-box{margin-bottom:13px;padding:10px 12px;border-left-width:4px;font-size:8.25pt;line-height:1.4;background:linear-gradient(90deg,#edf4f7 0%,#f8fafb 100%)}
-body:has(.sidebar-grid) .sidebar-grid{display:grid;grid-template-columns:minmax(0,1fr) 2.08in;gap:.23in;align-items:start}
-body:has(.sidebar-grid) .section-title{font-size:7.7pt;margin:10px 0 7px;gap:8px;letter-spacing:.105em}
+body:has(.sidebar-grid) .page{padding:.42in .50in .40in;box-shadow:0 16px 44px rgba(16,33,43,.14);margin-bottom:14px}
+body:has(.sidebar-grid) .doc-header{grid-template-columns:minmax(0,1fr) 1.02in;gap:.17in;padding-bottom:8px;margin-bottom:9px;border-bottom-width:3px}
+body:has(.sidebar-grid) .doc-name{font-size:24.5pt;letter-spacing:-.02em}
+body:has(.sidebar-grid) .doc-role{font-size:9.5pt;margin-top:4px;letter-spacing:.03em}
+body:has(.sidebar-grid) .doc-logo{width:1.02in;align-self:center}
+body:has(.sidebar-grid) .contact-line{margin-top:6px;gap:2px 9px;font-size:7.6pt;line-height:1.22}
+body:has(.sidebar-grid) .doc-kicker{font-size:6.9pt;margin-bottom:3px;letter-spacing:.14em}
+body:has(.sidebar-grid) .doc-title{font-size:19.1pt;line-height:1.04;margin-bottom:6px;max-width:6.65in}
+body:has(.sidebar-grid) .summary-box{margin-bottom:9px;padding:8px 10px;border-left-width:4px;font-size:8.45pt;line-height:1.34;background:linear-gradient(90deg,#edf4f7 0%,#f8fafb 100%)}
+body:has(.sidebar-grid) .sidebar-grid{display:grid;grid-template-columns:minmax(0,1fr) 2.02in;gap:.17in;align-items:start}
+body:has(.sidebar-grid) .section-title{font-size:7.55pt;margin:6px 0 5px;gap:7px;letter-spacing:.1em}
 body:has(.sidebar-grid) .section-title:first-child{margin-top:0}
-body:has(.sidebar-grid) .experience{position:relative;break-inside:avoid;margin:0 0 11px;padding:0 0 10px 9px;border-bottom:1px solid #dbe4e8}
-body:has(.sidebar-grid) .experience:last-child{border-bottom:0;margin-bottom:0}
-body:has(.sidebar-grid) .experience::before{content:"";position:absolute;left:0;top:2px;bottom:8px;width:2px;background:#c8dbe4;border-radius:2px}
-body:has(.sidebar-grid) .experience-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
-body:has(.sidebar-grid) .experience h3{margin:0;font-size:9.7pt;line-height:1.15;letter-spacing:.005em}
+body:has(.sidebar-grid) .experience{position:relative;break-inside:avoid;margin:0 0 7px;padding:0 0 6px 8px;border-bottom:1px solid #dbe4e8}
+body:has(.sidebar-grid) .experience:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+body:has(.sidebar-grid) .experience::before{content:"";position:absolute;left:0;top:2px;bottom:5px;width:2px;background:#c8dbe4;border-radius:2px}
+body:has(.sidebar-grid) .experience-head{display:flex;justify-content:space-between;gap:9px;align-items:baseline}
+body:has(.sidebar-grid) .experience h3{margin:0;font-size:9.65pt;line-height:1.12;letter-spacing:.005em}
 body:has(.sidebar-grid) .date{font-size:7.05pt;white-space:nowrap;color:#5b6c76;font-weight:800}
-body:has(.sidebar-grid) .title{font-size:7.75pt;margin:2px 0 5px;color:#0069aa;font-weight:800;line-height:1.2}
-body:has(.sidebar-grid) .experience ul{margin:0;padding-left:13px;font-size:7.72pt;line-height:1.39}
-body:has(.sidebar-grid) .experience li{margin:2.8px 0;padding-left:1px}
-body:has(.sidebar-grid) aside{display:flex;flex-direction:column;gap:8px}
-body:has(.sidebar-grid) .side-card{break-inside:avoid;margin:0;padding:9px 10px;background:#f8fafb;border:1px solid #d7e2e7;border-top:3px solid #0069aa;border-radius:6px;box-shadow:0 2px 8px rgba(16,33,43,.035)}
-body:has(.sidebar-grid) .side-card h3{font-size:7.85pt;margin:0 0 6px;color:#003b5c;letter-spacing:.045em;text-transform:uppercase}
-body:has(.sidebar-grid) .side-card p{font-size:7.35pt;line-height:1.38;margin:3px 0}
-body:has(.sidebar-grid) .side-card ul,body:has(.sidebar-grid) .side-card ol{font-size:7.3pt;line-height:1.37;margin:0;padding-left:14px}
-body:has(.sidebar-grid) .side-card li{margin:2.6px 0}
-body:has(.sidebar-grid) .tags{display:flex;flex-wrap:wrap;gap:3px}
-body:has(.sidebar-grid) .tag{padding:2.5px 4.5px;font-size:6.25pt;border:1px solid #d2dde2;background:#fff;border-radius:999px;line-height:1.18;font-weight:700}
-body:has(.sidebar-grid) .continuation .doc-header{grid-template-columns:minmax(0,1fr) 2.55in;align-items:start;margin-bottom:12px}
-body:has(.sidebar-grid) .continuation .sidebar-grid{grid-template-columns:minmax(0,1fr) 2.08in}
-body:has(.sidebar-grid) .continuation .mini-contact{font-size:7.25pt;line-height:1.42;white-space:nowrap;text-align:right;color:#52646d}
-body:has(.sidebar-grid) .continuation .section-title{margin-top:2px}
-body:has(.sidebar-grid) .page-footer{left:.54in;right:.54in;bottom:.2in;font-size:6.6pt;padding-top:6px}
+body:has(.sidebar-grid) .title{font-size:7.8pt;margin:1px 0 3px;color:#0069aa;font-weight:800;line-height:1.16}
+body:has(.sidebar-grid) .experience ul{margin:0;padding-left:13px;font-size:8.02pt;line-height:1.33}
+body:has(.sidebar-grid) .experience li{margin:1.9px 0;padding-left:1px}
+body:has(.sidebar-grid) aside{display:flex;flex-direction:column;gap:5px}
+body:has(.sidebar-grid) .side-card{break-inside:avoid;margin:0;padding:7px 8px;background:#f8fafb;border:1px solid #d7e2e7;border-top:3px solid #0069aa;border-radius:5px;box-shadow:none}
+body:has(.sidebar-grid) .side-card h3{font-size:7.7pt;margin:0 0 4px;color:#003b5c;letter-spacing:.04em;text-transform:uppercase}
+body:has(.sidebar-grid) .side-card p{font-size:7.55pt;line-height:1.3;margin:2px 0}
+body:has(.sidebar-grid) .side-card ul,body:has(.sidebar-grid) .side-card ol{font-size:7.5pt;line-height:1.31;margin:0;padding-left:13px}
+body:has(.sidebar-grid) .side-card li{margin:1.8px 0}
+body:has(.sidebar-grid) .tags{display:flex;flex-wrap:wrap;gap:2px}
+body:has(.sidebar-grid) .tag{padding:2px 4px;font-size:6.35pt;border:1px solid #d2dde2;background:#fff;border-radius:999px;line-height:1.12;font-weight:700}
+body:has(.sidebar-grid) .continuation .doc-header{grid-template-columns:minmax(0,1fr) 2.50in;align-items:start;margin-bottom:8px}
+body:has(.sidebar-grid) .continuation .sidebar-grid{grid-template-columns:minmax(0,1fr) 2.02in}
+body:has(.sidebar-grid) .continuation .mini-contact{font-size:7.2pt;line-height:1.32;white-space:nowrap;text-align:right;color:#52646d}
+body:has(.sidebar-grid) .continuation .section-title{margin-top:0}
+body:has(.sidebar-grid) .continuation .experience{margin-bottom:6px;padding-bottom:5px}
+body:has(.sidebar-grid) .page-footer{left:.50in;right:.50in;bottom:.18in;font-size:6.5pt;padding-top:5px}
 @media(max-width:900px){
-  body:has(.sidebar-grid) .page{margin:0;box-shadow:none;padding:26px 20px 42px}
+  body:has(.sidebar-grid) .page{margin:0;box-shadow:none;padding:22px 18px 38px}
   body:has(.sidebar-grid) .doc-header,body:has(.sidebar-grid) .sidebar-grid,body:has(.sidebar-grid) .continuation .sidebar-grid{grid-template-columns:1fr}
-  body:has(.sidebar-grid) .doc-logo{width:104px;margin-top:6px}
-  body:has(.sidebar-grid) aside{margin-top:8px}
+  body:has(.sidebar-grid) .doc-logo{width:100px;margin-top:4px}
+  body:has(.sidebar-grid) aside{margin-top:6px}
   body:has(.sidebar-grid) .continuation .mini-contact{text-align:left;white-space:normal}
 }
 @media print{
-  body:has(.sidebar-grid) .page{margin:0;box-shadow:none;padding:.48in .54in .45in}
-  body:has(.sidebar-grid) .page-footer{left:.54in;right:.54in;bottom:.2in}
+  body:has(.sidebar-grid) .page{margin:0;box-shadow:none;padding:.42in .50in .40in}
+  body:has(.sidebar-grid) .page-footer{left:.50in;right:.50in;bottom:.18in}
 }
