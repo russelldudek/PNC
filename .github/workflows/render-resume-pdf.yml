@@ -1,0 +1,85 @@
+name: Render resume PDF
+
+on:
+  push:
+    branches:
+      - fix/compact-resume-layout-20260804
+    paths:
+      - resume.html
+      - resume.css
+      - documents.css
+      - assets/brand/pnc-logo.svg
+      - .github/workflows/render-resume-pdf.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    if: ${{ !contains(github.event.head_commit.message || '', '[skip resume pdf]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/compact-resume-layout-20260804
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install renderer
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright pypdf
+          python -m playwright install --with-deps chromium
+      - name: Render two-page PDF and validate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          from pypdf import PdfReader
+
+          source = Path('resume.html').resolve()
+          output = Path('docs/Russell-Dudek-PNC-Enterprise-AI-Resume.pdf').resolve()
+          output.parent.mkdir(parents=True, exist_ok=True)
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              page = browser.new_page(viewport={"width": 816, "height": 1056})
+              page.goto(source.as_uri(), wait_until='load')
+              page.emulate_media(media='print')
+              pages = page.locator('.resume-page')
+              assert pages.count() == 2, f'Expected two resume pages, found {pages.count()}'
+              assert page.locator('.resume-page-one .resume-rail, .resume-page-two .resume-rail').count() == 0
+              assert page.locator('.resume-page-one .experience').count() == 4
+              assert page.locator('.resume-page-two > .experience').count() == 4
+              metrics = page.evaluate("""() => [...document.querySelectorAll('.resume-page')].map((p) => {
+                const footer = p.querySelector('.page-footer');
+                const items = [...p.children].filter(x => x !== footer);
+                const last = items[items.length - 1];
+                const pr = p.getBoundingClientRect(), fr = footer.getBoundingClientRect(), lr = last.getBoundingClientRect();
+                return {height: pr.height, scrollHeight: p.scrollHeight, gap: fr.top - lr.bottom};
+              })""")
+              for i, metric in enumerate(metrics, 1):
+                  assert metric['scrollHeight'] <= metric['height'] + 1, f'Page {i} overflows: {metric}'
+                  assert 0 <= metric['gap'] <= 105, f'Page {i} has excessive dead space: {metric}'
+              page.pdf(path=str(output), format='Letter', print_background=True,
+                       margin={"top":"0","right":"0","bottom":"0","left":"0"},
+                       prefer_css_page_size=True)
+              browser.close()
+
+          reader = PdfReader(str(output))
+          assert len(reader.pages) == 2, f'Generated PDF has {len(reader.pages)} pages'
+          print('Validated layout metrics:', metrics)
+          print('Validated PDF pages:', len(reader.pages))
+          PY
+      - name: Commit rendered PDF
+        run: |
+          if git diff --quiet -- docs/Russell-Dudek-PNC-Enterprise-AI-Resume.pdf; then
+            echo 'PDF already current.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/Russell-Dudek-PNC-Enterprise-AI-Resume.pdf
+          git commit -m 'Update compact resume PDF [skip resume pdf]'
+          git push origin HEAD:fix/compact-resume-layout-20260804
